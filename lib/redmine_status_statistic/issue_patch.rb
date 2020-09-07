@@ -21,7 +21,7 @@ module RedmineStatusStatistic::IssuePatch
       end
       duration_map[self.status_id] = duration_map[self.status_id] + last_time.business_time_until(Time.zone.now)
 
-      result = {"statuses"=>[], "assigned_to"=>[], "total"=>[]}
+      result = {"statuses"=>[], "total"=>[]}
 
       sec_per_business_day = BusinessTime::Config.end_of_workday - BusinessTime::Config.beginning_of_workday
 
