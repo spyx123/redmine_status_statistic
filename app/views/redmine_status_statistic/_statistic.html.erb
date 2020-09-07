@@ -1,0 +1,42 @@
+<table>
+  <tbody>
+    <tr>
+      <th><%= l(:field_status) %></th>
+      <% statistic["statuses"].each do |s| %>
+        <td><%= s[:status].name %></td>
+      <% end %>
+      <th>
+        <% if statistic["total"][:is_closed] %>
+          <%= l(:label_completed, scope: 'status_statistic') %>    
+        <% else %>          
+          <%= l(:label_working, scope: 'status_statistic') %>    
+        <% end %>
+      </th>
+    </tr>
+      <tr>
+        <th><%= l(:label_duration, scope: 'status_statistic') %></th>
+        <% statistic["statuses"].each do |s| %>
+          <td><%= t(:value, scope: 'status_statistic', days: s[:days], hours: s[:hours]) %></td>
+        <% end %>
+        <td><%= t(:value, scope: 'status_statistic', days: statistic["total"][:days], hours: statistic["total"][:hours]) %></td>
+      </tr>
+  </tbody>
+</table>
+
+
+<table>
+  <tbody>
+    <tr>
+      <th><%= l(:field_assigned_to) %></th>
+      <% statistic["assigned_to"].each do |s| %>
+        <td><a href="/users/<%= s[:assigned_to].id %>"><%= s[:assigned_to].name %></a></td>
+      <% end %>
+    </tr>
+    <tr>
+        <th><%= l(:label_duration, scope: 'status_statistic') %></th>
+        <% statistic["assigned_to"].each do |s| %>
+          <td><%= t(:value, scope: 'status_statistic', days: s[:days], hours: s[:hours]) %></td>
+        <% end %>
+      </tr>
+  </tbody>
+</table>

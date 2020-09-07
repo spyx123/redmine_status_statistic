@@ -1,0 +1,7 @@
+en:
+  field_status_statistic: Statistic
+  status_statistic:
+    label_duration: Duration
+    value: "%{days}d %{hours}h"
+    label_completed: Completed
+    label_working: Working

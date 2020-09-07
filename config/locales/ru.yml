@@ -1,0 +1,7 @@
+ru:
+  field_status_statistic: Статистика
+  status_statistic:
+    label_duration: Длительность
+    value: "%{days}д %{hours}ч"
+    label_completed: Выполнена
+    label_working: Выполняется
