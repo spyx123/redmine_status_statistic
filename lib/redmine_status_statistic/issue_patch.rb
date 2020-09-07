@@ -21,22 +21,6 @@ module RedmineStatusStatistic::IssuePatch
       end
       duration_map[self.status_id] = duration_map[self.status_id] + last_time.business_time_until(Time.zone.now)
 
-      last_time_assigned_to = self.created_on
-      duration_map_assigned_to = {}
-      duration_map_assigned_to.default = 0
-      work_sec_assigned_to    = 0;
-      
-      self.journals.order(created_on: :asc).each do |record|
-        detail = record.detail_for_attribute 'assigned_to_id'
-        unless detail.nil?
-          duration = last_time_assigned_to.business_time_until(record.created_on)
-          last_time_assigned_to = record.created_on
-          assigned_to_id = detail.old_value.to_i
-          duration_map_assigned_to[assigned_to_id] = duration_map_assigned_to[assigned_to_id] + duration
-        end
-      end
-      duration_map_assigned_to[self.assigned_to_id] = duration_map_assigned_to[self.assigned_to_id] + last_time_assigned_to.business_time_until(Time.zone.now)
-
       result = {"statuses"=>[], "assigned_to"=>[], "total"=>[]}
 
       sec_per_business_day = BusinessTime::Config.end_of_workday - BusinessTime::Config.beginning_of_workday
@@ -56,16 +40,6 @@ module RedmineStatusStatistic::IssuePatch
         end
       end
       
-      duration_map_assigned_to.keys.each do |assigned_to_id|
-        assigned_to = User.find_by_id(assigned_to_id)
-        if assigned_to.present?
-          days, seconds = duration_map_assigned_to[assigned_to.id].divmod sec_per_business_day
-          hours, o = seconds.divmod 3600
-          result["assigned_to"].append({assigned_to: assigned_to, days: days, hours: hours, sec: duration_map_assigned_to[assigned_to.id]})
-        end
-      end  
-      
-
       days, seconds = work_sec.divmod sec_per_business_day
       hours, o = seconds.divmod 3600
       result["total"] = {is_closed: IssueStatus.find(self.status_id).is_closed, days: days, hours: hours}
