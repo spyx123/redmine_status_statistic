@@ -22,3 +22,21 @@
       </tr>
   </tbody>
 </table>
+
+
+<table>
+  <tbody>
+    <tr>
+      <th><%= l(:field_assigned_to) %></th>
+      <% statistic["assigned_to"].each do |s| %>
+        <td><a href="/users/<%= s[:assigned_to].id %>"><%= s[:assigned_to].name %></a></td>
+      <% end %>
+    </tr>
+    <tr>
+        <th><%= l(:label_duration, scope: 'status_statistic') %></th>
+        <% statistic["assigned_to"].each do |s| %>
+          <td><%= t(:value, scope: 'status_statistic', days: s[:days], hours: s[:hours]) %></td>
+        <% end %>
+      </tr>
+  </tbody>
+</table>
